@@ -2,7 +2,7 @@
     "name": "DOM Explorer",
     "version": "1.0",
     "description": "Compares a website's old and new Domain Object Model.",
-    "permissions": ["activeTab","declarativeContent", "storage", "bookmarks"], 
+    "permissions": ["activeTab","declarativeContent", "storage", "bookmarks", "tabs"], 
     "background": {
         "scripts": ["/scripts/background.js"],
         "persistent": false

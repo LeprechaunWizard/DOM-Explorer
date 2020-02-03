@@ -75,7 +75,17 @@ function updatePopup(request) {
 
   div.style.visibility = "visible";
 
+  console.log(request);
+
+  let oldInfo = extractNumberAndURL(request.oldUrl);
+  let newInfo = extractNumberAndURL(request.newUrl);
   let diff = request.DIFF;
+
+
+  // update site information
+
+  document.getElementById("oldSite").innerHTML = "First Site: " + oldInfo[1] +", date: " + oldInfo[0];
+  document.getElementById("newSite").innerHTML = "Second Site: " + newInfo[1] +", date: " + newInfo[0];
 
   // update percentage
   if (request.percent > 0 && request.percent < 1) {
@@ -195,4 +205,32 @@ function getAttributes(diffObj) {
       if (!val) { return 'Whitespace'; }
       return val;
   }
+}
+
+function extractNumberAndURL(url) {
+  let info = [];
+  let urlArr = url.split("/");
+
+  info[0] = extractDate(urlArr[4]);
+  info[1] = urlArr[7];
+
+
+  console.log(info);
+
+  return info;
+}
+
+
+function extractDate(number) {
+  let separateNum = number.split("");
+
+  let date = "";
+
+  date += separateNum.slice(0, 4).join("");
+  date +=  "/"
+  date += separateNum.slice(4, 6).join("");
+  date +=  "/"
+  date += separateNum.slice(6, 8).join("");
+
+  return date;
 }

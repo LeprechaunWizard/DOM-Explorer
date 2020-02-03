@@ -14,11 +14,15 @@ try {
         diff = makeDIFF(response, function(diff) {
             //send message to popup.js
             diffPercent = calculateDiffPercent(response, function(diffPercent) {
+
+                console.log(response);
                 try {
                     chrome.runtime.sendMessage({
                         DIFF: diff,
                         prev: html2json(response.oldValue),
-                        percent: diffPercent
+                        percent: diffPercent,
+                        oldUrl: response.oldURL,
+                        newUrl: response.newURL,
                     },
                     function (response) {
                         // console.log("Response: ", response);

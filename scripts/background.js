@@ -7,6 +7,9 @@
 
 var oldValue = {};
 var newValue = {};
+var oldUrl = "";
+var newUrl = "";
+
 
 //receive DOM from content.js
 //save old value
@@ -19,8 +22,8 @@ chrome.runtime.onMessage.addListener(
         }
 
         if (request.DOM != undefined) {
-            console.log(sender.tab.title);
             var url = sender.tab.title;
+
             newValue = {};
             newValue[url] = {};
             newValue[url].DOM = request.DOM + '';
@@ -28,13 +31,30 @@ chrome.runtime.onMessage.addListener(
             chrome.storage.local.get(url, result => {
                 oldValue = result;
                 chrome.storage.local.set(newValue); // this accepts a callback
+                updateURL(sender.tab.url);
                 console.log("old: " + JSON.stringify(oldValue, null, 2));
                 console.log("new: " + JSON.stringify(newValue, null, 2));
+
+                console.log("new url: " + newUrl);
+                console.log("old url: " + oldUrl);
                 sendResponse({
                     oldValue: Object.getOwnPropertyNames(oldValue).length === 0 ? "" : oldValue[url].DOM,
-                    newValue: newValue[url].DOM
+                    newValue: newValue[url].DOM,
+                    oldURL: oldUrl,
+                    newURL: newUrl
                 });
             })
             return true;
         }        
     });
+
+
+function updateURL(url) {
+    if(oldUrl.localeCompare("") === 0) {
+        oldUrl = url;
+        newUrl = url;
+    } else  {
+        oldUrl = newUrl;
+        newUrl = url;
+    }
+}

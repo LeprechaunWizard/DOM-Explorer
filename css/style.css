@@ -47,6 +47,14 @@ span.collapsible-text {
     position: relative;
 }
 
+.light {
+  height: 50px;
+  width: 50px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 /* The following css is from a guide on how to create JS animations */
 /* https://www.youtube.com/watch?v=qB_EEdcj6-U */
 .ring {
