@@ -28,12 +28,21 @@ body {
     font-size: x-large;
 }
 
+#light_row {
+    margin: 50 auto;
+    text-align: center;
+}
+
 .collapsible {
     margin-bottom: 0;
     border-left: 0px;
     border-right: 0px;
     box-shadow: none !important;
     -webkit-box-shadow: none;
+}
+
+.savedSites {
+    font-size: 15px;
 }
 
 .collapsible li:last-child .collapsible-body  {
@@ -53,6 +62,9 @@ span.collapsible-text {
   background-color: #bbb;
   border-radius: 50%;
   display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  align: center;
 }
 
 /* The following css is from a guide on how to create JS animations */
