@@ -1,6 +1,8 @@
 import { html2json } from 'html2json';
 import * as jsondiffpatch from 'jsondiffpatch';
+import * as sequencematcher from 'sequencematcher';
 
+var sm = require('sequencematcher');
 var diff = {};
 
 try {
@@ -89,10 +91,36 @@ function createHTMLString() {
     // return outputString
     let outputString = document.body.outerHTML;
     let splitted = [];
+
+    console.log("Hello, this is the content.js script");
+    console.log(outputString);
     splitted = outputString.split("<div id=\"wm-ipp-base\" lang=\"en\" style=\"display: block; direction: ltr;\"> </div>")
     // console.log(outputString);
 
     outputString = splitted[0].concat(splitted[1]);
     // console.log(outputString);
     return outputString;
+}
+
+function structuralSim() {
+
+}
+
+/*
+* param 1: html string
+* param 2: html string
+* return int 
+*/
+function styleSim(document_1, document_2){
+
+}
+
+function jointSim() {
+
+}
+
+function getTags(doc) {
+    let tags = [];
+
+    
 }
