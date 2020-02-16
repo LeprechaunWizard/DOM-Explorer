@@ -66,7 +66,10 @@ function makeDIFF(response, cb) {
         console.log(newValue);
 
         diff = jsondiffpatch.diff(oldValue, newValue);
-        console.log(diff);
+
+        let delta = jsondiffpatch.formatters.jsonpatch.format(diff);
+        console.log("the delta");
+        getStats(delta);
 
         if (diff === undefined) {
             diff = {content: false};
@@ -102,8 +105,42 @@ function createHTMLString() {
     return outputString;
 }
 
-function structuralSim() {
 
+function getStats(delta) {
+    let stats = {add: 0, remove: 0, replace: 0, move: 0}
+
+    for(var key in delta) {
+        if(delta.hasOwnProperty(key)) {
+            console.log(delta[key].op)
+
+            switch(delta[key].op) {
+                case "add":
+                    stats.add += 1;
+                    break;
+                case "remove":
+                    stats.remove += 1;
+                    break;
+                case "replace":
+                    stats.replace += 1;
+                    break;
+                case "move":
+                    stats.move += 1;
+                    break;
+                default:
+                    console.log("invalid operation");
+                    break;
+            }
+        }
+    }
+
+    console.log(stats);
+
+    return stats;
+}
+
+
+function structuralSim(document_1, document_2) {
+    
 }
 
 /*
@@ -119,8 +156,9 @@ function jointSim() {
 
 }
 
-function getTags(doc) {
-    let tags = [];
+function getDocument() {
+    let doc = document.getElementsByTagName("*");
 
-    
+
+    return doc;
 }
