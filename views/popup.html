@@ -20,6 +20,7 @@
 
     <!-- CSS override -->
     <link rel="stylesheet" href="../css/style.css" />
+    <script src="../scripts/Chart.min.js"></script>
   </head>
 
   <body>
@@ -27,11 +28,12 @@
     <script type="text/javascript" src="../css/js/materialize.min.js"></script>
     <script type="text/javascript" src="../css/js/jsondiffpatch.umd.js"></script>
     <script type="text/javascript" src="../scripts/display-bundle.js"></script>
-
+    <script type="text/javascript" src="../scripts/Chart.min.js"></script>
 
     <div class = "row">
       <ul id="tabs-swipe-main" class="tabs">
         <li class="tab col s3"><a class="active" href="#summary_tab">Summary</a></li>
+        <li class="tab col s3"><a href="#chart_tab"></a></li>
         <li class="tab col s3"><a href="#diff_tab">Diff</a></li>
       </ul>
       
@@ -48,6 +50,7 @@
           <span id="greenLight" class="light"></span>
         </div>
 
+      <!-- display precentage ring-->
         <div id="ring" class="ring">
           <span id="loader-span"></span>
           <p id="diff">Test</p>
@@ -60,10 +63,15 @@
           <div id="newDOM" class="domCompare">
             <span id="newSite" class="savedSites">Second Website: </span>
           </div>
-
         </div>
 
         <!--<script src="../scripts/popup.js"></script>-->
+      </div>
+
+      <div id="chart_tab">
+        <div id="chart_div">
+          <canvas id="chart"></canvas>
+        </div>
       </div>
 
       <div id="diff_tab" class="details">
@@ -80,6 +88,6 @@
       </div>
     </div>
     <script src="../scripts/popup.js"></script>
-
+    <script type="text/javascript" src="../scripts/Chart.min.js"></script>
   </body>
 </html>

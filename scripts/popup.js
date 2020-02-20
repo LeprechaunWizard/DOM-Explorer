@@ -80,12 +80,17 @@ function updatePopup(request) {
   let oldInfo = extractNumberAndURL(request.oldUrl);
   let newInfo = extractNumberAndURL(request.newUrl);
   let diff = request.DIFF;
+  let stats = request.stats;
+
+  console.log(stats);
 
 
   // update site information
-
   document.getElementById("oldSite").innerHTML = "First Site: " + oldInfo[1] +", date: " + oldInfo[0];
   document.getElementById("newSite").innerHTML = "Second Site: " + newInfo[1] +", date: " + newInfo[0];
+
+  //update chart
+  drawChart(stats);
 
   // update percentage
   if (request.percent > 0 && request.percent < 1) {
@@ -156,6 +161,8 @@ function setColors(lightOn) {
   }
 }
 
+
+
 // function to change color of lights based on the percentage
 function analysePercent(percent) {
 
@@ -170,7 +177,56 @@ function analysePercent(percent) {
   }
 }
 
+// draw the graph
+function drawChart(stats) {
 
+  // google.charts.load('current', {packages: ['corechart']});
+  // google.charts.setOnLoadCallback(drawChart);
+
+
+  // // Create the data table.
+  // var data = new google.visualization.DataTable();
+  // data.addColumn('string', 'Action');
+  // data.addColumn('number', 'Data');
+  // data.addRows([
+  //   ['Add', stats.add],
+  //   ['Remove', stats.remove],
+  //   ['Replace', stats.replace],
+  //   ['Move', stats.move]
+  // ]);
+
+  // // Set chart options
+  // var options = {'title':'',
+  //                'width':400,
+  //                'height':300};
+
+  // // Instantiate and draw our chart, passing in some options.
+  // var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+  // chart.draw(data, options);
+
+  var ctx = document.getElementById("chart").getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [ 'Add', 'Remove', 'Replace', 'Move' ],
+              datasets: [{
+                barPercentage: 0.5,
+                barThickness: 6,
+                maxBarThickness: 8,
+                minBarLength: 2,
+
+                backgroundColor: [
+                    "#59be5b",
+                    "#d56328",
+                    "#ff1b2d",
+                    "#0078d7"
+                ],
+              data: [ stats.add, stats.remove, stats.replace, stats.move ]
+          }]
+      }
+  });
+
+}
 
 // return name or nodename of a diff
 function getName(diffObj) {

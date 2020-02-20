@@ -25,6 +25,7 @@ try {
                         percent: diffPercent,
                         oldUrl: response.oldURL,
                         newUrl: response.newURL,
+                        stats: getStats(diff),
                     },
                     function (response) {
                         // console.log("Response: ", response);
@@ -67,9 +68,9 @@ function makeDIFF(response, cb) {
 
         diff = jsondiffpatch.diff(oldValue, newValue);
 
-        let delta = jsondiffpatch.formatters.jsonpatch.format(diff);
-        console.log("the delta");
-        getStats(delta);
+        // let delta = jsondiffpatch.formatters.jsonpatch.format(diff);
+        // console.log("the delta");
+        // getStats(delta);
 
         if (diff === undefined) {
             diff = {content: false};
@@ -106,12 +107,12 @@ function createHTMLString() {
 }
 
 
-function getStats(delta) {
+function getStats(diff) {
     let stats = {add: 0, remove: 0, replace: 0, move: 0}
+    let delta = jsondiffpatch.formatters.jsonpatch.format(diff);
 
     for(var key in delta) {
         if(delta.hasOwnProperty(key)) {
-            console.log(delta[key].op)
 
             switch(delta[key].op) {
                 case "add":
@@ -134,7 +135,6 @@ function getStats(delta) {
     }
 
     console.log(stats);
-
     return stats;
 }
 
