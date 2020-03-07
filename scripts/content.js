@@ -1,7 +1,7 @@
 import { html2json } from 'html2json';
 import * as jsondiffpatch from 'jsondiffpatch';
 import * as sequencematcher from 'sequencematcher';
-
+var difflib = require('difflib');
 var sm = require('sequencematcher');
 var diff = {};
 
@@ -167,7 +167,12 @@ function recursion(data, squ) {
 
 
 function structuralSim(document_1, document_2) {
-    
+    let seq_1 = getDocSequence(document_1);
+    let seq_2 = getDocSequence(document_2);
+
+    let diff = new difflib.SequenceMatcher(null, seq_1, seq_2);
+
+    return diff.ratio();
 }
 
 /*
