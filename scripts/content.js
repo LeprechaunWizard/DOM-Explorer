@@ -138,6 +138,33 @@ function getStats(diff) {
     return stats;
 }
 
+function getDocSequence(domJson) {
+    let sequence = [];
+
+    recursion(domJson, sequence);
+
+    return sequence;
+}
+
+function recursion(data, squ) {
+
+    if(data.child === undefined) {
+    return;
+  }
+  
+  console.log(data.node)
+  if(data.node === 'element') {
+    squ.push(data.tag);
+  }
+  
+  for(let ch in data.child) {
+    //console.log(data.child[ch]);
+    recursion(data.child[ch], squ);
+  }
+  //console.log(squ);
+  return
+}
+
 
 function structuralSim(document_1, document_2) {
     
