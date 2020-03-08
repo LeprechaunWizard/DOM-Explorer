@@ -73,6 +73,7 @@ span.collapsible-text {
     margin-left: auto;
     margin-right: auto;
     visibility: hidden;
+    display: block;
     position: absolute;
     top: 10%;
     bottom: 10%;
