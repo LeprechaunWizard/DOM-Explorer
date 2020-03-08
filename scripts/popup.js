@@ -81,6 +81,7 @@ function updatePopup(request) {
   let newInfo = extractNumberAndURL(request.newUrl);
   let diff = request.DIFF;
   let stats = request.stats;
+  let ratio = request.structuralRatio;
 
   console.log(stats);
 
@@ -91,6 +92,9 @@ function updatePopup(request) {
 
   //update chart
   drawChart(stats);
+  updateRatios(ratio);
+
+  console.log("precent:" + request.precent);
 
   // update percentage
   if (request.percent > 0 && request.percent < 1) {
@@ -141,20 +145,27 @@ function resetColors() {
 
 }
 
+function updateRatio(strRatio) {
+  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + strRatio;
+  
+}
+
 
 // function to switch which light colors are on
 function setColors(lightOn) {
   resetColors();
 
+  console.log("current light: " + lightOn);
+
   switch(lightOn) {
     case "red":
-      document.getElementById("redLight").style.backgroundColor = "red";
+      document.getElementById("redLight").style.backgroundColor = "Crimson";
       break;
     case "yellow":
-      document.getElementById("yellowLight").style.backgroundColor = "yellow";
+      document.getElementById("yellowLight").style.backgroundColor = "Gold";
       break;
     case "green":
-      document.getElementById("greenLight").style.backgroundColor = "green";
+      document.getElementById("greenLight").style.backgroundColor = "LightGreen";
       break;
     default:
       console.log("Invalid light color");

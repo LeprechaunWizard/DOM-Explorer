@@ -23,6 +23,7 @@ try {
                         DIFF: diff,
                         prev: html2json(response.oldValue),
                         percent: diffPercent,
+                        structuralRatio: structuralSim(response.oldValue, response.newValue),
                         oldUrl: response.oldURL,
                         newUrl: response.newURL,
                         stats: getStats(diff),
@@ -163,6 +164,10 @@ function recursion(data, squ) {
   }
   //console.log(squ);
   return
+}
+
+function getClasses() {
+    
 }
 
 
