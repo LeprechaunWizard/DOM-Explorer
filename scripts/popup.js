@@ -145,7 +145,7 @@ function resetColors() {
 
 }
 
-function updateRatio(strRatio) {
+function updateRatios(strRatio) {
   document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + strRatio;
   
 }

@@ -1,7 +1,7 @@
 import { html2json } from 'html2json';
 import * as jsondiffpatch from 'jsondiffpatch';
 import * as sequencematcher from 'sequencematcher';
-var difflib = require('difflib');
+//var difflib = require('difflib');
 var sm = require('sequencematcher');
 var diff = {};
 
@@ -12,28 +12,33 @@ try {
     function (response) {
         diff = {};
         var diffPercent = 0;
+        var ratio = -1;
         // console.log("Response: ", response);
         diff = makeDIFF(response, function(diff) {
             //send message to popup.js
             diffPercent = calculateDiffPercent(response, function(diffPercent) {
 
-                console.log(response);
-                try {
-                    chrome.runtime.sendMessage({
-                        DIFF: diff,
-                        prev: html2json(response.oldValue),
-                        percent: diffPercent,
-                        structuralRatio: structuralSim(response.oldValue, response.newValue),
-                        oldUrl: response.oldURL,
-                        newUrl: response.newURL,
-                        stats: getStats(diff),
-                    },
-                    function (response) {
-                        // console.log("Response: ", response);
-                    });
-                } catch(e) {
-                    console.log("Something went wrong while trying to send the DOM diff: " + e);
-                }
+                ratio = structuralSim(response, function(ratio) {
+                    console.log(response);
+                    try {
+                        chrome.runtime.sendMessage({
+                            DIFF: diff,
+                            prev: html2json(response.oldValue),
+                            percent: diffPercent,
+                            structuralRatio: ratio,
+                            oldUrl: response.oldURL,
+                            newUrl: response.newURL,
+                            stats: getStats(diff),
+                        },
+                        function (response) {
+                            // console.log("Response: ", response);
+                        });
+                    } catch(e) {
+                        console.log("Something went wrong while trying to send the DOM diff: " + e);
+                    }
+                });
+
+
             });
         });
     });
@@ -46,9 +51,11 @@ try {
 function calculateDiffPercent(response, cb) {
     var oldValue = JSON.stringify(response.oldValue);
     var newValue = JSON.stringify(response.newValue);
+
+    structuralSim(response.oldValue, response.newValue)
     
     var diffPercent = (Math.abs(oldValue.length - newValue.length) / ((oldValue.length + newValue.length)/2)) * 100;
-    console.log(diffPercent);
+    //console.log(diffPercent);
     cb(diffPercent);
 }
 
@@ -98,7 +105,7 @@ function createHTMLString() {
     let splitted = [];
 
     console.log("Hello, this is the content.js script");
-    console.log(outputString);
+    //console.log(outputString);
     splitted = outputString.split("<div id=\"wm-ipp-base\" lang=\"en\" style=\"display: block; direction: ltr;\"> </div>")
     // console.log(outputString);
 
@@ -135,13 +142,13 @@ function getStats(diff) {
         }
     }
 
-    console.log(stats);
+    //console.log(stats);
     return stats;
 }
 
 function getDocSequence(domJson) {
     let sequence = [];
-
+    //let 
     recursion(domJson, sequence);
 
     return sequence;
@@ -172,10 +179,18 @@ function getClasses() {
 
 
 function structuralSim(document_1, document_2) {
+    console.log("structuralSim");
+    let doc_1 = html2json(document_1);
+    let doc_2 = html2json(document_2);
+
+    console.log(doc_1);
+
     let seq_1 = getDocSequence(document_1);
     let seq_2 = getDocSequence(document_2);
 
     let diff = new difflib.SequenceMatcher(null, seq_1, seq_2);
+
+    console.log("ratio: " + diff.ratio())
 
     return diff.ratio();
 }
