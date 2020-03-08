@@ -186,10 +186,10 @@ function structuralSim(response, cb) {
     let doc_1 = html2json(document_1);
     let doc_2 = html2json(document_2);
 
-    //console.log(doc_1);
+    console.log(doc_1);
 
-    let seq_1 = getDocSequence(document_1);
-    let seq_2 = getDocSequence(document_2);
+    let seq_1 = getDocSequence(doc_1);
+    let seq_2 = getDocSequence(doc_2);
 
     console.log(seq_1);
     console.log(seq_2);
