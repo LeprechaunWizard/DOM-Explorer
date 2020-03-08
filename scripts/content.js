@@ -1,7 +1,7 @@
 import { html2json } from 'html2json';
 import * as jsondiffpatch from 'jsondiffpatch';
 import * as sequencematcher from 'sequencematcher';
-//var difflib = require('difflib');
+var difflib = require('difflib');
 var sm = require('sequencematcher');
 var diff = {};
 
@@ -12,7 +12,7 @@ try {
     function (response) {
         diff = {};
         var diffPercent = 0;
-        var ratio = -1;
+        var ratio = 0.0;
         // console.log("Response: ", response);
         diff = makeDIFF(response, function(diff) {
             //send message to popup.js
@@ -52,7 +52,7 @@ function calculateDiffPercent(response, cb) {
     var oldValue = JSON.stringify(response.oldValue);
     var newValue = JSON.stringify(response.newValue);
 
-    structuralSim(response.oldValue, response.newValue)
+    //structuralSim(response.oldValue, response.newValue)
     
     var diffPercent = (Math.abs(oldValue.length - newValue.length) / ((oldValue.length + newValue.length)/2)) * 100;
     //console.log(diffPercent);
@@ -178,21 +178,27 @@ function getClasses() {
 }
 
 
-function structuralSim(document_1, document_2) {
-    console.log("structuralSim");
+function structuralSim(response, cb) {
+    console.log("Structural Sim");
+
+    let document_1 = response.oldValue;
+    let document_2 = response.newValue;
     let doc_1 = html2json(document_1);
     let doc_2 = html2json(document_2);
 
-    console.log(doc_1);
+    //console.log(doc_1);
 
     let seq_1 = getDocSequence(document_1);
     let seq_2 = getDocSequence(document_2);
+
+    console.log(seq_1);
+    console.log(seq_2);
 
     let diff = new difflib.SequenceMatcher(null, seq_1, seq_2);
 
     console.log("ratio: " + diff.ratio())
 
-    return diff.ratio();
+    cb(diff.ratio());
 }
 
 /*

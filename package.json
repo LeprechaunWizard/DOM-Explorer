@@ -9,6 +9,7 @@
     "browserify": "^16.5.0",
     "chart.js": "^2.9.3",
     "diff-dom": "^4.1.6",
+    "difflib": "^0.2.4",
     "encoding": "^0.1.12",
     "find-up": "^4.1.0",
     "highcharts": "^7.2.1",
