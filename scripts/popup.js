@@ -146,9 +146,20 @@ function resetColors() {
 }
 
 function updateRatios(strRatio) {
-  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + strRatio;
+
+  var percentRatio = processRatios(strRatio)
+
+  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + percentRatio;
   
 }
+
+function processRatios(ratio) {
+  var percentRatio = ratio * 100;
+  Math.floor(percentRatio);
+
+  return percentRatio;
+}
+
 
 
 // function to switch which light colors are on
@@ -273,6 +284,7 @@ function getAttributes(diffObj) {
       return val;
   }
 }
+
 
 function extractNumberAndURL(url) {
   let info = [];
