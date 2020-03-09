@@ -146,6 +146,7 @@ function getStats(diff) {
     return stats;
 }
 
+// function to get the element sequence from the DOM tree
 function getDocSequence(domJson) {
     let sequence = [];
     //let 
@@ -154,6 +155,7 @@ function getDocSequence(domJson) {
     return sequence;
 }
 
+//support function for getDocSequence
 function recursion(data, squ) {
 
     if(data.child === undefined) {
@@ -170,11 +172,32 @@ function recursion(data, squ) {
     recursion(data.child[ch], squ);
   }
   //console.log(squ);
-  return
+  return;
 }
 
-function getClasses() {
-    
+// get the css classes used from the DOM tree
+function getClasses(domJson) {
+    let classes = [];
+
+    classRecursion(domJson, classes);
+
+    return classes;
+}
+
+function classRecursion(data, arr) {
+    if(data.child === undefined) {
+        return;
+    }
+
+    if(data.attr.class !== undefined) {
+        arr.push(data.attr.class);
+    }
+
+    for(let ch in data.child) {
+        classRecursion(data.child[ch], arr);
+    }
+
+    return;
 }
 
 
