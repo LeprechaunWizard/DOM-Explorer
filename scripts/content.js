@@ -233,8 +233,12 @@ function styleSim(document_1, document_2){
 
 }
 
-function jointSim() {
-
+/*
+* Joint similarity function combining the structural and style similarity into 
+* one calqulation. 
+*/
+function jointSim(structural_similarity, style_similarity, k = 0.5) {
+    return k * structural_similarity + (1 - k) * style_similarity;
 }
 
 function getDocument() {
