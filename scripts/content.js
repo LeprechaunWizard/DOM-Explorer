@@ -146,6 +146,20 @@ function getStats(diff) {
     return stats;
 }
 
+function comparison(data, cb) {
+    let comparisons = [];
+
+    let strSim = structuralSim(data);
+    let stySim = styleSim(data);
+    let jSim = jointSim(strSim, stySim);
+
+    comparisons.push(strSim);
+    comparisons.push(styleSim);
+    comparisons.push(jSim);
+
+    return 
+}
+
 // function to get the element sequence from the DOM tree
 function getDocSequence(domJson) {
     let sequence = [];
@@ -155,10 +169,11 @@ function getDocSequence(domJson) {
     return sequence;
 }
 
+
 //support function for getDocSequence
 function recursion(data, squ) {
 
-    if(data.child === undefined) {
+  if(data.child === undefined) {
     return;
   }
   
@@ -201,7 +216,7 @@ function classRecursion(data, arr) {
 }
 
 
-function structuralSim(response, cb) {
+function structuralSim(response) {
     console.log("Structural Sim");
 
     let document_1 = response.oldValue;
@@ -221,7 +236,7 @@ function structuralSim(response, cb) {
 
     console.log("ratio: " + diff.ratio())
 
-    cb(diff.ratio());
+    return diff.ratio();
 }
 
 /*
@@ -229,7 +244,10 @@ function structuralSim(response, cb) {
 * param 2: html string
 * return int 
 */
-function styleSim(document_1, document_2){
+function styleSim(data){
+
+    let document_1 = response.oldValue;
+    let document_2 = response.newValue;
     let classDoc_1 = getClasses(document_1);
     let classDoc_2 = getClasses(document_2);
 

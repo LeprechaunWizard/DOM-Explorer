@@ -81,7 +81,7 @@ function updatePopup(request) {
   let newInfo = extractNumberAndURL(request.newUrl);
   let diff = request.DIFF;
   let stats = request.stats;
-  let ratio = request.structuralRatio;
+  let ratio = request.similaritys;
 
   console.log(stats);
 
@@ -147,15 +147,20 @@ function resetColors() {
 
 function updateRatios(strRatio) {
 
-  var percentRatio = processRatios(strRatio)
+  var percentRatios = processRatios(strRatio)
 
-  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + percentRatio;
-  
+  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + percentRatio[0] + "%";
+  document.getElementById("style_ratio").innerHTML = "Style Ratio: " + percentRatio[1] + "%";
+  document.getElementById("joint_ratio").innerHTML = "Joint Ratio: " + perccentRatio[2] + "%";
 }
 
 function processRatios(ratio) {
-  var percentRatio = ratio * 100;
-  Math.floor(percentRatio);
+
+  let percentRatio = [];
+
+  for(e of ratio) {
+    precentRatio.push(Math.floor(e * 100))
+  }
 
   return percentRatio;
 }
