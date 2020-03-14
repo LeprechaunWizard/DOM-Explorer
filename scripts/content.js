@@ -233,6 +233,13 @@ function styleSim(document_1, document_2){
 
 }
 
+function jaccard_similarity(classArr_1, classArr_2) {
+    let set_1 = new Set(classArr_1);
+    let set_2 = new Set(classArr_2);
+
+
+}
+
 /*
 * Joint similarity function combining the structural and style similarity into 
 * one calqulation. 
@@ -246,4 +253,16 @@ function getDocument() {
 
 
     return doc;
+}
+
+function findIntersection(set1, set2) {
+    let answer = new Set();
+
+    for(let e in set1) {
+        if(set2.has(e)) {
+            answer.add(e);
+        }
+    }
+
+    return answer;
 }
