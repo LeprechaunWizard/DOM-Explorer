@@ -230,14 +230,30 @@ function structuralSim(response, cb) {
 * return int 
 */
 function styleSim(document_1, document_2){
+    let classDoc_1 = getClasses(document_1);
+    let classDoc_2 = getClasses(document_2);
 
+    return jaccard_similarity(classDoc_1, classDoc_2); 
 }
 
 function jaccard_similarity(classArr_1, classArr_2) {
     let set_1 = new Set(classArr_1);
     let set_2 = new Set(classArr_2);
 
+    let setInter = findIntersection(set_1, set_2);
+    let numerator = setInter.size;
 
+    if(set_1.size === 0 && set_2.size === 0) {
+        return 1.0;
+    }
+
+
+    let demoninstor = set_1.size + set_2.size - numerator;
+    if(demoninstor === 0) {
+        demoninstor = 0.000001;
+    } 
+
+    return numerator / demoninstor;
 }
 
 /*
