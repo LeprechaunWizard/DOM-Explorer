@@ -18,14 +18,14 @@ try {
             //send message to popup.js
             diffPercent = calculateDiffPercent(response, function(diffPercent) {
 
-                ratio = structuralSim(response, function(ratio) {
+                ratio = comparison(response, function(ratio) {
                     console.log(response);
                     try {
                         chrome.runtime.sendMessage({
                             DIFF: diff,
                             prev: html2json(response.oldValue),
                             percent: diffPercent,
-                            structuralRatio: ratio,
+                            similaritys: ratio,
                             oldUrl: response.oldURL,
                             newUrl: response.newURL,
                             stats: getStats(diff),
@@ -157,7 +157,7 @@ function comparison(data, cb) {
     comparisons.push(styleSim);
     comparisons.push(jSim);
 
-    return 
+    cb(comparisons)
 }
 
 // function to get the element sequence from the DOM tree
