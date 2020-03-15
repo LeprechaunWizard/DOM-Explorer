@@ -338,3 +338,13 @@ function findIntersection(set1, set2) {
 
     return answer;
 }
+
+function findUnion(set1, set2) {
+    let union = new Set(set1);
+
+    for(let e of set2) {
+        union.add(e)
+    }
+
+    return union;
+}
