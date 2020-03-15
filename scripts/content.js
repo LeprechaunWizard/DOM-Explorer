@@ -12,30 +12,42 @@ try {
     function (response) {
         diff = {};
         var diffPercent = 0;
-        var ratio = 0.0;
+        var structuralRatio = 0.0;
+        var styleRatio = 0.0;
+        var jointRatio = 0.0;
         // console.log("Response: ", response);
         diff = makeDIFF(response, function(diff) {
             //send message to popup.js
             diffPercent = calculateDiffPercent(response, function(diffPercent) {
 
-                ratio = comparison(response, function(ratio) {
-                    console.log(response);
-                    try {
-                        chrome.runtime.sendMessage({
-                            DIFF: diff,
-                            prev: html2json(response.oldValue),
-                            percent: diffPercent,
-                            similaritys: ratio,
-                            oldUrl: response.oldURL,
-                            newUrl: response.newURL,
-                            stats: getStats(diff),
-                        },
-                        function (response) {
-                            // console.log("Response: ", response);
+                structuralRatio = structuralSim(response, function(structuralRatio) {
+
+                    styleRatio = styleSim(response, function(styleRatio) {
+
+                        jointRatio = jointSim(structuralRatio, styleRatio, function(styleRatio) {
+
+                            console.log(response);
+                            try {
+                                chrome.runtime.sendMessage({
+                                    DIFF: diff,
+                                    prev: html2json(response.oldValue),
+                                    percent: diffPercent,
+                                    structure: structuralRatio,
+                                    style: styleRatio,
+                                    joint: jointRatio,
+                                    oldUrl: response.oldURL,
+                                    newUrl: response.newURL,
+                                    stats: getStats(diff),
+                                },
+                                function (response) {
+                                    // console.log("Response: ", response);
+                                });
+                            } catch(e) {
+                                console.log("Something went wrong while trying to send the DOM diff: " + e);
+                            }
                         });
-                    } catch(e) {
-                        console.log("Something went wrong while trying to send the DOM diff: " + e);
-                    }
+                    });
+
                 });
 
 
@@ -177,7 +189,7 @@ function recursion(data, squ) {
     return;
   }
   
-  console.log(data.node)
+  //console.log(data.node)
   if(data.node === 'element') {
     squ.push(data.tag);
   }
@@ -196,6 +208,8 @@ function getClasses(domJson) {
 
     classRecursion(domJson, classes);
 
+    console.log(classes)
+
     return classes;
 }
 
@@ -204,8 +218,19 @@ function classRecursion(data, arr) {
         return;
     }
 
-    if(data.attr.class !== undefined) {
+
+
+    if(data.attr !== undefined && data.attr.class !== undefined) {
+        console.log(data.attr.class);
         arr.push(data.attr.class);
+    }
+
+    if(data.attr !== undefined && data.attr.id !== undefined) {
+        arr.push(data.attr.id);
+    }
+
+    if(data.attr !== undefined && data.attr.style !== undefined) {
+        arr.push(data.attr.style);
     }
 
     for(let ch in data.child) {
@@ -216,7 +241,7 @@ function classRecursion(data, arr) {
 }
 
 
-function structuralSim(response) {
+function structuralSim(response, cb) {
     console.log("Structural Sim");
 
     let document_1 = response.oldValue;
@@ -224,7 +249,7 @@ function structuralSim(response) {
     let doc_1 = html2json(document_1);
     let doc_2 = html2json(document_2);
 
-    console.log(doc_1);
+    //console.log(doc_1);
 
     let seq_1 = getDocSequence(doc_1);
     let seq_2 = getDocSequence(doc_2);
@@ -236,7 +261,7 @@ function structuralSim(response) {
 
     console.log("ratio: " + diff.ratio())
 
-    return diff.ratio();
+    cb(diff.ratio());
 }
 
 /*
@@ -244,14 +269,19 @@ function structuralSim(response) {
 * param 2: html string
 * return int 
 */
-function styleSim(data){
+function styleSim(data, cb){
 
-    let document_1 = response.oldValue;
-    let document_2 = response.newValue;
+    console.log("Style Sim");
+
+    let document_1 = html2json(data.oldValue);
+    let document_2 = html2json(data.newValue);
+
+    console.log(document_1);
+
     let classDoc_1 = getClasses(document_1);
     let classDoc_2 = getClasses(document_2);
 
-    return jaccard_similarity(classDoc_1, classDoc_2); 
+    cb(jaccard_similarity(classDoc_1, classDoc_2)); 
 }
 
 function jaccard_similarity(classArr_1, classArr_2) {
@@ -267,9 +297,12 @@ function jaccard_similarity(classArr_1, classArr_2) {
 
 
     let demoninstor = set_1.size + set_2.size - numerator;
+
     if(demoninstor === 0) {
         demoninstor = 0.000001;
     } 
+
+    console.log("style ratio: " + numerator / demoninstor);
 
     return numerator / demoninstor;
 }
@@ -278,13 +311,18 @@ function jaccard_similarity(classArr_1, classArr_2) {
 * Joint similarity function combining the structural and style similarity into 
 * one calqulation. 
 */
-function jointSim(structural_similarity, style_similarity, k = 0.5) {
-    return k * structural_similarity + (1 - k) * style_similarity;
+function jointSim(structural_similarity, style_similarity, cb, k = 0.5) {
+    console.log("Joint Sim");
+
+    let joint = k * structural_similarity + (1 - k) * style_similarity;
+
+    console.log(joint);
+
+    cb(joint);
 }
 
 function getDocument() {
     let doc = document.getElementsByTagName("*");
-
 
     return doc;
 }

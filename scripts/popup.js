@@ -81,7 +81,12 @@ function updatePopup(request) {
   let newInfo = extractNumberAndURL(request.newUrl);
   let diff = request.DIFF;
   let stats = request.stats;
-  let ratio = request.similaritys;
+  let ratio = [];
+
+  ratio.push(request.structuralRatio);
+  ratio.push(request.styleRatio);
+  ratio.push(request.jointRatio);
+
 
   console.log(stats);
 

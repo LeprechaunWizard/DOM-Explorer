@@ -67,6 +67,11 @@ span.collapsible-text {
   align: center;
 }
 
+.ratioInfo {
+    display: block;
+    font-size: 15px;
+}
+
 /* The following css is from a guide on how to create JS animations */
 /* https://www.youtube.com/watch?v=qB_EEdcj6-U */
 .ring {
