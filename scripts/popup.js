@@ -83,12 +83,12 @@ function updatePopup(request) {
   let stats = request.stats;
   let ratio = [];
 
-  ratio.push(request.structuralRatio);
-  ratio.push(request.styleRatio);
-  ratio.push(request.jointRatio);
+  ratio.push(request.structure);
+  ratio.push(request.style);
+  ratio.push(request.joint);
 
 
-  console.log(stats);
+  console.log(ratio);
 
 
   // update site information
@@ -154,9 +154,9 @@ function updateRatios(strRatio) {
 
   var percentRatios = processRatios(strRatio)
 
-  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + percentRatio[0] + "%";
-  document.getElementById("style_ratio").innerHTML = "Style Ratio: " + percentRatio[1] + "%";
-  document.getElementById("joint_ratio").innerHTML = "Joint Ratio: " + perccentRatio[2] + "%";
+  document.getElementById("structural_ratio").innerHTML = "Structural Ratio: " + percentRatios[0] + "%";
+  document.getElementById("style_ratio").innerHTML = "Style Ratio: " + percentRatios[1] + "%";
+  document.getElementById("joint_ratio").innerHTML = "Joint Ratio: " + percentRatios[2] + "%";
 }
 
 function processRatios(ratio) {
@@ -164,7 +164,7 @@ function processRatios(ratio) {
   let percentRatio = [];
 
   for(e of ratio) {
-    precentRatio.push(Math.floor(e * 100))
+    percentRatio.push(Math.floor(e * 100))
   }
 
   return percentRatio;

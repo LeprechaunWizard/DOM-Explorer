@@ -18,13 +18,14 @@ try {
         // console.log("Response: ", response);
         diff = makeDIFF(response, function(diff) {
             //send message to popup.js
+            console.log(diff);
             diffPercent = calculateDiffPercent(response, function(diffPercent) {
 
                 structuralRatio = structuralSim(response, function(structuralRatio) {
 
                     styleRatio = styleSim(response, function(styleRatio) {
 
-                        jointRatio = jointSim(structuralRatio, styleRatio, function(styleRatio) {
+                        jointRatio = jointSim(structuralRatio, styleRatio, function(jointRatio) {
 
                             console.log(response);
                             try {
@@ -129,7 +130,13 @@ function createHTMLString() {
 
 function getStats(diff) {
     let stats = {add: 0, remove: 0, replace: 0, move: 0}
+
+    console.log("getting statistics");
+    
+
     let delta = jsondiffpatch.formatters.jsonpatch.format(diff);
+
+    console.log(delta);
 
     for(var key in delta) {
         if(delta.hasOwnProperty(key)) {
@@ -208,7 +215,7 @@ function getClasses(domJson) {
 
     classRecursion(domJson, classes);
 
-    console.log(classes)
+    //console.log(classes)
 
     return classes;
 }
@@ -221,7 +228,7 @@ function classRecursion(data, arr) {
 
 
     if(data.attr !== undefined && data.attr.class !== undefined) {
-        console.log(data.attr.class);
+        //console.log(data.attr.class);
         arr.push(data.attr.class);
     }
 
@@ -285,8 +292,8 @@ function styleSim(data, cb){
 }
 
 function jaccard_similarity(classArr_1, classArr_2) {
-    let set_1 = new Set(classArr_1);
-    let set_2 = new Set(classArr_2);
+    // let set_1 = new Set(classArr_1);
+    // let set_2 = new Set(classArr_2);
 
     // let setInter = findIntersection(set_1, set_2);
     // let numerator = setInter.size;
@@ -306,11 +313,11 @@ function jaccard_similarity(classArr_1, classArr_2) {
 
     // return numerator / demoninstor;
 
-    let diff = new difflib.SequenceMatcher(null, set_1, set_2);
+    let diff = new difflib.SequenceMatcher(null, classArr_1, classArr_2);
 
     console.log(diff.ratio());
 
-    
+
     return diff.ratio()
 }
 
