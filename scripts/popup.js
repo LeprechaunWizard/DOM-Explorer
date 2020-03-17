@@ -8,7 +8,7 @@ let recordDOM = document.getElementById("recordDOM");
 let precent = -1;
 
 let lowerBound = 50;
-let upperBound = 150;
+let upperBound = 80;
 
 resetColors();
 
@@ -73,7 +73,7 @@ function updatePopup(request) {
 
   var div = document.getElementById("ring");
 
-  div.style.visibility = "visible";
+  //div.style.visibility = "visible";
 
   console.log(request);
 
@@ -201,9 +201,9 @@ function analysePercent(percent) {
   console.log("Analyse Percent")
 
   if(percent < lowerBound) {
-    setColors("green");
-  } else if(percent > upperBound) {
     setColors("red");
+  } else if(percent > upperBound) {
+    setColors("green");
   } else {
     setColors("yellow");
   }
